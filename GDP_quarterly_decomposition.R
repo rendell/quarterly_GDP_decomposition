@@ -12,26 +12,27 @@ library(tempdisagg)
 # read files in R
 yearly_GDP=read.csv("yearly_GDP.csv")
 quarterly_dis=read.csv("quarterly_distribution.csv")
-monthly_dis=read.csv("monthly_distribution.csv")
 
 # Convert to a time series object
-myear <- ts(yearly_GDP$Nominal.GDP, start=c(2007, 1), end=c(2016, 1), frequency=1) 
-summary(myear)
-str(myear)
+Nominal_GDP <- ts(yearly_GDP$Nominal.GDP, start=c(2007, 1), end=c(2016, 1), frequency=1) 
+summary(Nominal_GDP)
+str(Nominal_GDP)
 
-myearR <- ts(yearly_GDPR$Real.GDP, start=c(2007, 1), end=c(2017, 1), frequency=1) 
-summary(myearR)
-str(myearR)
+Real_GDP <- ts(yearly_GDPR$Real.GDP, start=c(2007, 1), end=c(2017, 1), frequency=1) 
+summary(Real_GDP)
+str(Real_GDP)
 
-myq <- ts(quarterly_dis$Tour_receipts, start=c(2007, 1), end=c(2016, 4), frequency=4) 
+receipts <- ts(quarterly_dis$Tour_receipts, start=c(2007, 1), end=c(2016, 4), frequency=4) 
 summary(myq)
 str(myq)
 
 # plot series
-plot(myear)
-plot(myq)
-m1 <- td(myear ~ myq)
-m1R <- td(myearR ~ myq)
+plot(Nominal_GDP)
+plot(Real_GDP)
+plot(receipts)
+
+m1 <- td(Nominal_GDP ~ receipts)
+m1R <- td(Real_GDP ~ receipts)
 
 # Forecast series
 prediction=predict(m1)
@@ -39,6 +40,6 @@ predictionR = predict(m1R)
 plot(prediction)
 plot(predictionR)
 
-write.csv(prediction, file="output_GDP.csv")
+write.csv(prediction, file="output_Nominal_GDP.csv")
 write.csv(predictionR, file="output_Real_GDP.csv")
 
